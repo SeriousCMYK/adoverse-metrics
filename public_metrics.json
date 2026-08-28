@@ -1,0 +1,25 @@
+{
+  "last_updated": "2026-08-28T01:10:39.593962+00:00",
+  "windows": {
+    "yesterday": {
+      "ticket_count": 11,
+      "avg_first_touch_minutes": 15.3,
+      "avg_time_to_close_hours": 1.5
+    },
+    "1_week": {
+      "ticket_count": 53,
+      "avg_first_touch_minutes": 15.4,
+      "avg_time_to_close_hours": 1.0
+    },
+    "1_month": {
+      "ticket_count": 200,
+      "avg_first_touch_minutes": 18.9,
+      "avg_time_to_close_hours": 3.1
+    },
+    "3_month": {
+      "ticket_count": 240,
+      "avg_first_touch_minutes": 22.8,
+      "avg_time_to_close_hours": 5.6
+    }
+  }
+}
