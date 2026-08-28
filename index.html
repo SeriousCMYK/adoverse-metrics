@@ -1,7 +1,359 @@
 <!DOCTYPE html>
-<html>
-<head><title>Adoverse Metrics</title></head>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Adoverse IT — Support Metrics</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #F7F8F6;
+    --ink: #161B1F;
+    --teal: #1B6B63;
+    --teal-light: #E4EFED;
+    --slate: #5B6572;
+    --hairline: #E1E4E2;
+    --card-bg: #FFFFFF;
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--ink);
+    font-family: 'IBM Plex Sans', sans-serif;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .wrap {
+    max-width: 780px;
+    margin: 0 auto;
+    padding: 48px 24px 80px;
+  }
+
+  header {
+    margin-bottom: 40px;
+  }
+
+  .eyebrow {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 12px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--teal);
+    margin: 0 0 10px;
+  }
+
+  h1 {
+    font-size: 28px;
+    font-weight: 600;
+    margin: 0 0 8px;
+    letter-spacing: -0.01em;
+  }
+
+  .subtitle {
+    color: var(--slate);
+    font-size: 15px;
+    margin: 0;
+    max-width: 52ch;
+    line-height: 1.5;
+  }
+
+  .last-updated {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 12px;
+    color: var(--slate);
+    margin-top: 16px;
+  }
+
+  .tabs {
+    display: flex;
+    gap: 4px;
+    border-bottom: 1px solid var(--hairline);
+    margin-bottom: 28px;
+  }
+
+  .tab {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 13px;
+    background: none;
+    border: none;
+    padding: 10px 16px;
+    color: var(--slate);
+    cursor: pointer;
+    border-bottom: 2px solid transparent;
+    margin-bottom: -1px;
+    transition: color 0.15s ease, border-color 0.15s ease;
+  }
+
+  .tab:hover { color: var(--ink); }
+
+  .tab.active {
+    color: var(--teal);
+    border-bottom-color: var(--teal);
+    font-weight: 600;
+  }
+
+  .stat-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin-bottom: 32px;
+  }
+
+  @media (max-width: 560px) {
+    .stat-grid { grid-template-columns: 1fr; }
+  }
+
+  .stat-card {
+    background: var(--card-bg);
+    border: 1px solid var(--hairline);
+    border-radius: 8px;
+    padding: 24px;
+  }
+
+  .stat-label {
+    font-size: 13px;
+    color: var(--slate);
+    margin: 0 0 12px;
+    font-weight: 500;
+  }
+
+  .stat-value {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 40px;
+    font-weight: 600;
+    line-height: 1;
+    color: var(--ink);
+  }
+
+  .stat-unit {
+    font-size: 16px;
+    color: var(--slate);
+    font-weight: 400;
+    margin-left: 4px;
+  }
+
+  .stat-count {
+    font-size: 12px;
+    color: var(--slate);
+    margin-top: 10px;
+    font-family: 'IBM Plex Mono', monospace;
+  }
+
+  .compare {
+    background: var(--card-bg);
+    border: 1px solid var(--hairline);
+    border-radius: 8px;
+    padding: 20px 24px;
+  }
+
+  .compare-title {
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--slate);
+    margin: 0 0 16px;
+    font-weight: 500;
+  }
+
+  .compare-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 10px;
+  }
+
+  .compare-row:last-child { margin-bottom: 0; }
+
+  .compare-label {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 12px;
+    color: var(--slate);
+    width: 68px;
+    flex-shrink: 0;
+  }
+
+  .bar-track {
+    flex: 1;
+    height: 6px;
+    background: var(--teal-light);
+    border-radius: 3px;
+    overflow: hidden;
+  }
+
+  .bar-fill {
+    height: 100%;
+    background: var(--teal);
+    border-radius: 3px;
+    transition: width 0.4s ease;
+  }
+
+  .compare-value {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 12px;
+    color: var(--ink);
+    width: 60px;
+    text-align: right;
+    flex-shrink: 0;
+  }
+
+  footer {
+    margin-top: 40px;
+    padding-top: 20px;
+    border-top: 1px solid var(--hairline);
+    font-size: 13px;
+    color: var(--slate);
+    line-height: 1.6;
+  }
+
+  footer a { color: var(--teal); }
+
+  .loading, .error {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 13px;
+    color: var(--slate);
+    padding: 40px 0;
+  }
+</style>
+</head>
 <body>
-<h1>Metrics dashboard coming soon</h1>
+<div class="wrap">
+  <header>
+    <p class="eyebrow">Adoverse IT</p>
+    <h1>Support response times, live from our ticketing queue</h1>
+    <p class="subtitle">These are the actual, unedited numbers from our Help Desk queue — pulled directly from our PSA every day. Same data our own team looks at.</p>
+    <p class="last-updated" id="last-updated">Loading…</p>
+  </header>
+
+  <div id="content">
+    <p class="loading">Fetching current metrics…</p>
+  </div>
+
+  <footer>
+    Numbers reflect business-hours elapsed time (Mon&ndash;Fri, 8am&ndash;5pm ET) from ticket creation. Kennesaw, GA &middot; <a href="https://adoverseit.com">adoverseit.com</a>
+  </footer>
+</div>
+
+<script>
+const WINDOW_LABELS = {
+  yesterday: "Yesterday",
+  "1_week": "1 Week",
+  "1_month": "1 Month",
+  "3_month": "3 Month"
+};
+const WINDOW_ORDER = ["yesterday", "1_week", "1_month", "3_month"];
+
+let metricsData = null;
+let activeWindow = "1_week";
+
+function formatMinutes(min) {
+  if (min === null || min === undefined) return "—";
+  if (min < 60) return { value: min.toFixed(1), unit: "min" };
+  return { value: (min / 60).toFixed(1), unit: "hr" };
+}
+
+function formatHours(hrs) {
+  if (hrs === null || hrs === undefined) return { value: "—", unit: "" };
+  if (hrs < 1) return { value: (hrs * 60).toFixed(0), unit: "min" };
+  return { value: hrs.toFixed(1), unit: "hr" };
+}
+
+function render() {
+  const container = document.getElementById("content");
+  if (!metricsData) {
+    container.innerHTML = '<p class="error">Metrics data unavailable right now.</p>';
+    return;
+  }
+
+  const w = metricsData.windows[activeWindow];
+  const firstTouch = formatMinutes(w.avg_first_touch_minutes);
+  const close = formatHours(w.avg_time_to_close_hours);
+
+  const maxFirstTouch = Math.max(...WINDOW_ORDER.map(k => metricsData.windows[k].avg_first_touch_minutes || 0));
+  const maxClose = Math.max(...WINDOW_ORDER.map(k => metricsData.windows[k].avg_time_to_close_hours || 0));
+
+  let html = '<div class="tabs">';
+  WINDOW_ORDER.forEach(key => {
+    html += `<button class="tab ${key === activeWindow ? "active" : ""}" data-window="${key}">${WINDOW_LABELS[key]}</button>`;
+  });
+  html += '</div>';
+
+  html += '<div class="stat-grid">';
+  html += `
+    <div class="stat-card">
+      <p class="stat-label">Avg. time to first response</p>
+      <div class="stat-value">${firstTouch.value !== undefined ? firstTouch.value : firstTouch}<span class="stat-unit">${firstTouch.unit || ""}</span></div>
+      <p class="stat-count">${w.ticket_count} tickets in this window</p>
+    </div>
+    <div class="stat-card">
+      <p class="stat-label">Avg. time to resolution</p>
+      <div class="stat-value">${close.value}<span class="stat-unit">${close.unit}</span></div>
+      <p class="stat-count">${w.ticket_count} tickets in this window</p>
+    </div>
+  `;
+  html += '</div>';
+
+  html += '<div class="stat-grid">';
+
+  html += '<div class="compare"><p class="compare-title">First response, all windows</p>';
+  WINDOW_ORDER.forEach(key => {
+    const val = metricsData.windows[key].avg_first_touch_minutes;
+    const pct = maxFirstTouch ? Math.max(6, (val / maxFirstTouch) * 100) : 0;
+    const disp = formatMinutes(val);
+    html += `
+      <div class="compare-row">
+        <span class="compare-label">${WINDOW_LABELS[key]}</span>
+        <div class="bar-track"><div class="bar-fill" style="width:${pct}%"></div></div>
+        <span class="compare-value">${disp.value ?? "—"}${disp.unit ? " " + disp.unit : ""}</span>
+      </div>`;
+  });
+  html += '</div>';
+
+  html += '<div class="compare"><p class="compare-title">Resolution, all windows</p>';
+  WINDOW_ORDER.forEach(key => {
+    const val = metricsData.windows[key].avg_time_to_close_hours;
+    const pct = maxClose ? Math.max(6, (val / maxClose) * 100) : 0;
+    const disp = formatHours(val);
+    html += `
+      <div class="compare-row">
+        <span class="compare-label">${WINDOW_LABELS[key]}</span>
+        <div class="bar-track"><div class="bar-fill" style="width:${pct}%"></div></div>
+        <span class="compare-value">${disp.value}${disp.unit ? " " + disp.unit : ""}</span>
+      </div>`;
+  });
+  html += '</div>';
+
+  html += '</div>';
+
+  container.innerHTML = html;
+
+  document.querySelectorAll(".tab").forEach(btn => {
+    btn.addEventListener("click", () => {
+      activeWindow = btn.dataset.window;
+      render();
+    });
+  });
+}
+
+fetch("public_metrics.json?_=" + Date.now())
+  .then(res => {
+    if (!res.ok) throw new Error("Failed to load metrics");
+    return res.json();
+  })
+  .then(data => {
+    metricsData = data;
+    const updated = new Date(data.last_updated);
+    document.getElementById("last-updated").textContent =
+      "Last updated: " + updated.toLocaleString("en-US", { timeZone: "America/New_York", dateStyle: "medium", timeStyle: "short" }) + " ET";
+    render();
+  })
+  .catch(err => {
+    document.getElementById("content").innerHTML = '<p class="error">Metrics data unavailable right now.</p>';
+    document.getElementById("last-updated").textContent = "";
+  });
+</script>
 </body>
 </html>
