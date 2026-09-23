@@ -1,25 +1,25 @@
 {
-  "last_updated": "2026-09-22T12:00:02.755334+00:00",
+  "last_updated": "2026-09-23T12:00:02.959411+00:00",
   "windows": {
     "yesterday": {
-      "ticket_count": 9,
-      "avg_first_touch_minutes": 16.3,
-      "avg_time_to_close_hours": 0.7
+      "ticket_count": 8,
+      "avg_first_touch_minutes": 45.4,
+      "avg_time_to_close_hours": 0.9
     },
     "1_week": {
-      "ticket_count": 40,
-      "avg_first_touch_minutes": 9.6,
+      "ticket_count": 42,
+      "avg_first_touch_minutes": 16.7,
       "avg_time_to_close_hours": 3.0
     },
     "1_month": {
-      "ticket_count": 193,
-      "avg_first_touch_minutes": 13.0,
+      "ticket_count": 200,
+      "avg_first_touch_minutes": 14.3,
       "avg_time_to_close_hours": 2.2
     },
     "3_month": {
-      "ticket_count": 387,
-      "avg_first_touch_minutes": 18.9,
-      "avg_time_to_close_hours": 4.5
+      "ticket_count": 394,
+      "avg_first_touch_minutes": 19.4,
+      "avg_time_to_close_hours": 4.4
     }
   }
 }
